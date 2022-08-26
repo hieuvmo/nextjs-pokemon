@@ -1,33 +1,45 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IPokemonDetail } from "../../types/pokemon.model";
 import styles from "../../styles/Home.module.css";
 import Image from "next/image";
+import { GetServerSideProps, NextPage } from "next";
 
-const PokemonDetail = () => {
-  const {
-    query: { id },
-  } = useRouter();
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const resq = await fetch(
+    `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params?.id}.json`
+  );
 
-  const [pokemonItem, setPokemonItem] = useState<IPokemonDetail>();
-  console.log("pokemonItem", pokemonItem);
+  const data: IPokemonDetail = await resq.json();
 
-  useEffect(() => {
-    const fetchPokemonList = async () => {
-      try {
-        const resq = await fetch(
-          `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${id}.json`
-        );
-        setPokemonItem(await resq.json());
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
+  return {
+    props: {
+      pokemonItem: data,
+    },
+  };
+};
 
-    if (id) fetchPokemonList();
-  }, [id]);
+const PokemonDetail: NextPage<{ pokemonItem: IPokemonDetail }> = ({
+  pokemonItem,
+}) => {
+  //   const [pokemonItem, setPokemonItem] = useState<IPokemonDetail>();
+  //   console.log("pokemonItem", pokemonItem);
+
+  //   useEffect(() => {
+  //     const fetchPokemonList = async () => {
+  //       try {
+  //         const resq = await fetch(
+  //           `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${id}.json`
+  //         );
+  //         setPokemonItem(await resq.json());
+  //       } catch (error) {
+  //         console.log("error", error);
+  //       }
+  //     };
+
+  //     if (id) fetchPokemonList();
+  //   }, [id]);
 
   return (
     <div className={styles.container}>
