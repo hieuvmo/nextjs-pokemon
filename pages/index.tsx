@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { IPokemon } from "../types/pokemon.model";
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   const resq = await fetch(
     "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
   );
@@ -17,7 +17,7 @@ export async function getServerSideProps() {
       pokemon: data,
     },
   };
-}
+};
 
 const Home: NextPage<{ pokemon: IPokemon[] }> = ({ pokemon }) => {
   return (

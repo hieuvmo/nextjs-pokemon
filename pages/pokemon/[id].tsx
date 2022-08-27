@@ -10,9 +10,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const resq = await fetch(
     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params?.id}.json`
   );
-
   const data: IPokemonDetail = await resq.json();
-
   return {
     props: {
       pokemonItem: data,
@@ -23,24 +21,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const PokemonDetail: NextPage<{ pokemonItem: IPokemonDetail }> = ({
   pokemonItem,
 }) => {
-  //   const [pokemonItem, setPokemonItem] = useState<IPokemonDetail>();
-  //   console.log("pokemonItem", pokemonItem);
-
-  //   useEffect(() => {
-  //     const fetchPokemonList = async () => {
-  //       try {
-  //         const resq = await fetch(
-  //           `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${id}.json`
-  //         );
-  //         setPokemonItem(await resq.json());
-  //       } catch (error) {
-  //         console.log("error", error);
-  //       }
-  //     };
-
-  //     if (id) fetchPokemonList();
-  //   }, [id]);
-
   return (
     <div className={styles.container}>
       <Head>
