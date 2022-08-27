@@ -1,12 +1,27 @@
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { IPokemonDetail } from "../../types/pokemon.model";
+import { IPokemon, IPokemonDetail } from "../../types/pokemon.model";
 import styles from "../../styles/Home.module.css";
 import Image from "next/image";
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  const resq = await fetch(
+    "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
+  );
+
+  const data: IPokemon[] = await resq.json();
+
+  return {
+    paths: data.map((item) => ({
+      params: { id: item.id.toString() },
+    })),
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const resq = await fetch(
     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params?.id}.json`
   );

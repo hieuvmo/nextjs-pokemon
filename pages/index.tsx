@@ -1,11 +1,11 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { IPokemon } from "../types/pokemon.model";
 
-export const getServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const resq = await fetch(
     "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
   );
